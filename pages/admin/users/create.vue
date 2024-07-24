@@ -29,6 +29,15 @@ const addressFields = [
   { label: 'รหัสไปรษณีย์', model: 'postalCode', type: 'number', placeholder: 'รหัสไปรษณีย์' },
 ]
 
+const titleOptions = [
+  { value: 'นาย', label: 'นาย' },
+  { value: 'นาง', label: 'นาง' },
+  { value: 'นางสาว', label: 'นางสาว' },
+  { value: 'เด็กชาย', label: 'เด็กชาย' },
+  { value: 'เด็กหญิง', label: 'เด็กหญิง' },
+  { value: 'อื่น ๆ', label: 'อื่น ๆ' },
+]
+
 const newUser = ref({
   firstname: '',
   lastname: '',
@@ -45,7 +54,8 @@ const newUser = ref({
   subdistrict: '',
   district: '',
   province: '',
-  postalCode: null
+  postalCode: null,
+  title: ''
 })
 
 const formatPhoneNumber = (value) => {
@@ -82,7 +92,19 @@ const createUser = async () => {
         <h1 class="text-2xl font-bold mb-4 text-center">เพิ่มข้อมูลผู้ป่วย</h1>
 
         <form @submit.prevent="createUser">
-          <div class="grid grid-cols-3 gap-4">
+          <label class="form-control w-full ">
+            <div class="label">
+              <span class="label-text text-base">คำนำหน้า</span>
+            </div>
+            <select v-model="selectedTitle" class="select select-bordered">
+              <option disabled value="">เลือก</option>
+              <option v-for="option in titleOptions" :key="option.value" :value="option.value">
+                {{ option.label }}
+              </option>
+            </select>
+          </label>
+
+          <div class="grid grid-cols-3 gap-4 mt-5">
             <div v-for="(field, index) in fields" :key="index" class="form-control w-full mb-4">
               <span class="label-text text-base">{{ field.label }}</span>
               <!-- Use textarea for fields that need it -->

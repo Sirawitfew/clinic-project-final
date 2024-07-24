@@ -3,6 +3,18 @@
     <h1 class="text-2xl font-bold mb-4">แก้ไขข้อมูล</h1>
     <form @submit.prevent="updateUser">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+
+        <label class="form-control w-full mt-2">
+          <div class="mb-4">
+              <span class="label-text text-base">คำนำหน้า</span>
+          </div>
+          <select v-model="selectedTitle" class="select select-bordered">
+            <option disabled value="">เลือก</option>
+            <option v-for="option in titleOptions" :key="option.value" :value="option.value">
+              {{ option.label }}
+            </option>
+          </select>
+        </label>
         <label v-for="(field, index) in fields" :key="index" class="form-control w-full mb-4">
           <div class="label mb-2">
             <span class="label-text text-base">{{ field.label }}</span>
@@ -65,7 +77,8 @@ const editUser = ref({
   subdistrict: '',
   district: '',
   province: '',
-  postalCode: null
+  postalCode: null,
+  title: ''
 })
 
 const fields = [
@@ -75,9 +88,9 @@ const fields = [
   { label: 'วันเกิด', model: 'birthdate', type: 'date', placeholder: 'วันเกิด' },
   { label: 'น้ำหนัก', model: 'weight', type: 'number', step: '0.1', placeholder: 'น้ำหนัก' },
   { label: 'ส่วนสูง', model: 'height', type: 'number', step: '0.1', placeholder: 'ส่วนสูง' },
-  { label: 'โรคประจำตัว', model: 'allergy', type: 'textarea', placeholder: 'กรุณากรอกข้อมูลโรคประจำตัว' },
-  { label: 'แพ้ยา', model: 'congenital', type: 'textarea', placeholder: 'กรุณากรอกข้อมูลแพ้ยา' },
   { label: 'กรุปเลือด', model: 'blood_type', type: 'text', placeholder: 'กรุปเลือด' },
+  { label: 'แพ้ยา', model: 'congenital', type: 'textarea', placeholder: 'กรุณากรอกข้อมูลแพ้ยา' },
+  { label: 'โรคประจำตัว', model: 'allergy', type: 'textarea', placeholder: 'กรุณากรอกข้อมูลโรคประจำตัว' },
   { label: 'เบอร์โทรศัพท์', model: 'phoneNumber', type: 'text', placeholder: 'เบอร์โทรศัพท์' },
 ]
 
@@ -88,6 +101,15 @@ const addressFields = [
   { label: 'อำเภอ', model: 'district', type: 'text', placeholder: 'อำเภอ' },
   { label: 'จังหวัด', model: 'province', type: 'text', placeholder: 'จังหวัด' },
   { label: 'รหัสไปรษณีย์', model: 'postalCode', type: 'number', placeholder: 'รหัสไปรษณีย์' },
+]
+
+const titleOptions = [
+  { value: 'นาย', label: 'นาย' },
+  { value: 'นาง', label: 'นาง' },
+  { value: 'นางสาว', label: 'นางสาว' },
+  { value: 'เด็กชาย', label: 'เด็กชาย' },
+  { value: 'เด็กหญิง', label: 'เด็กหญิง' },
+  { value: 'อื่น ๆ', label: 'อื่น ๆ' },
 ]
 
 const loadUser = async () => {

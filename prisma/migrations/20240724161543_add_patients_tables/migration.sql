@@ -1,6 +1,7 @@
 -- CreateTable
 CREATE TABLE "patients" (
     "id" SERIAL NOT NULL,
+    "title" TEXT NOT NULL,
     "firstname" TEXT NOT NULL,
     "lastname" TEXT NOT NULL,
     "age" INTEGER NOT NULL,

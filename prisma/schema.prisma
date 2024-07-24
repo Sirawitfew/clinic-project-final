@@ -13,33 +13,25 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model patients { 
-  id          Int      @id @default(autoincrement()) 
-  firstname   String 
-  lastname    String 
-  age         Int 
-  weight      Float 
-  height      Float 
-  blood_type  String 
-  congenital  String 
-  allergy     String 
+model patients {
+  id          Int      @id @default(autoincrement())
+  title       String   // คำนำหน้า เช่น นาย, นาง, นางสาว , อื่นๆ
+  firstname   String
+  lastname    String
+  age         Int
+  weight      Float
+  height      Float
+  blood_type  String
+  congenital  String
+  allergy     String
   birthdate   DateTime //วันเกิด 
-  houseNumber Int  // บ้านเลขที่ 
+  houseNumber Int // บ้านเลขที่ 
   village     Int // หมู่ 
-  subdistrict String 
-  district    String 
-  province    String 
+  subdistrict String
+  district    String
+  province    String
   postalCode  Int // เลขไปรษณีย์ 
   phoneNumber String // เบอร์โทรศัพท์ 
-  createdAt   DateTime @default(now()) 
-  updatedAt   DateTime @updatedAt 
-}
-
-model products {
-  id      Int      @id @default(autoincrement())
-  name    String
-  about   String
-  quantity  Int
-  remainquantity Int
-  createdAt   DateTime @default(now()) 
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
