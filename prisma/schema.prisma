@@ -34,4 +34,24 @@ model patients {
   phoneNumber String // เบอร์โทรศัพท์ 
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  patientHistories PatientHistory[]
+}
+
+model PatientHistory {
+  id              Int      @id @default(autoincrement())
+  patientId       Int
+  weight          Float
+  height          Float
+  temperature     Float
+  bloodPressure   Float
+  pulse           Float
+  respiration     Float
+  chiefComplaint  String
+  symptoms        String
+  physicalExam    String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  patient         patients @relation(fields: [patientId], references: [id])
 }

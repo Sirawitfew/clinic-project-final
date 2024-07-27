@@ -3,12 +3,11 @@
     <h1 class="text-2xl font-bold mb-4">แก้ไขข้อมูล</h1>
     <form @submit.prevent="updateUser">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-
         <label class="form-control w-full mt-2">
           <div class="mb-4">
-              <span class="label-text text-base">คำนำหน้า</span>
+            <span class="label-text text-base">คำนำหน้า</span>
           </div>
-          <select v-model="selectedTitle" class="select select-bordered">
+          <select v-model="editUser.title" class="select select-bordered">
             <option disabled value="">เลือก</option>
             <option v-for="option in titleOptions" :key="option.value" :value="option.value">
               {{ option.label }}
@@ -117,6 +116,10 @@ const loadUser = async () => {
   const users = userStore.users
   const user = users.find(user => user.id === userId)
   if (user) {
+    // Format the birthdate to YYYY-MM-DD if it's not null or undefined
+    if (user.birthdate) {
+      user.birthdate = new Date(user.birthdate).toISOString().split('T')[0];
+    }
     editUser.value = { ...user }
   } else {
     router.push('/users')
@@ -124,8 +127,12 @@ const loadUser = async () => {
 }
 
 const updateUser = async () => {
-  await userStore.updateUser(editUser.value)
-  router.push('/admin/users')
+  if (editUser.value.birthdate) {
+    editUser.value.birthdate = new Date(editUser.value.birthdate).toISOString();
+  }
+  
+  await userStore.updateUser(editUser.value);
+  router.push('/admin/users');
 }
 
 const cancelEdit = () => {

@@ -55,7 +55,7 @@ const newUser = ref({
   district: '',
   province: '',
   postalCode: null,
-  title: ''
+  title: '' // เพิ่มฟิลด์นี้
 })
 
 const formatPhoneNumber = (value) => {
@@ -92,11 +92,11 @@ const createUser = async () => {
         <h1 class="text-2xl font-bold mb-4 text-center">เพิ่มข้อมูลผู้ป่วย</h1>
 
         <form @submit.prevent="createUser">
-          <label class="form-control w-full ">
+          <label class="form-control w-full">
             <div class="label">
               <span class="label-text text-base">คำนำหน้า</span>
             </div>
-            <select v-model="selectedTitle" class="select select-bordered">
+            <select v-model="newUser.title" class="select select-bordered"> <!-- ใช้ newUser.title แทน selectedTitle -->
               <option disabled value="">เลือก</option>
               <option v-for="option in titleOptions" :key="option.value" :value="option.value">
                 {{ option.label }}
@@ -107,7 +107,6 @@ const createUser = async () => {
           <div class="grid grid-cols-3 gap-4 mt-5">
             <div v-for="(field, index) in fields" :key="index" class="form-control w-full mb-4">
               <span class="label-text text-base">{{ field.label }}</span>
-              <!-- Use textarea for fields that need it -->
               <template v-if="field.type === 'textarea'">
                 <textarea v-model="newUser[field.model]" :placeholder="field.placeholder"
                   class="input input-bordered w-full h-24 placeholder-centered"></textarea>

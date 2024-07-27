@@ -10,14 +10,15 @@ export default defineNuxtConfig({
     },
   },
   modules: [
-    '@pinia/nuxt', 
-    '@nuxtjs/tailwindcss', 
-    '@nuxtjs/google-fonts'
+    '@pinia/nuxt',
+    '@nuxtjs/tailwindcss',
+    '@nuxtjs/google-fonts',
+    '@nuxt/image',
   ],
   googleFonts: {
     families: {
       Sarabun: [400, 700], // Load all weights and styles
     },
     display: 'swap', // Optional: Control the display mode
-  }
+  },
 })

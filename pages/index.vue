@@ -12,22 +12,22 @@ import adminLayouts from '~/layouts/adminLayouts.vue';
         <h2 class="text-2xl font-bold">Dashboard</h2>
       </div>
       <div class="flex gap-4">
-        <div class="card bg-base-100 w-96 shadow-xl">
+        <div class="card bg-[#2584FF] w-96 shadow-xl">
           <div class="card-body">
-            <h2 class="card-title">ผู้ป่วยทั้งหมด</h2>
-            <p>If a dog chews shoes whose shoes does he choose?</p>
+            <h2 class="card-title text-white font-light text-base">ผู้ป่วยทั้งหมด</h2>
+            <p></p>
           </div>
         </div>
-        <div class="card bg-base-100 w-96 shadow-xl">
+        <div class="card bg-[#00AC97] w-96 shadow-xl">
           <div class="card-body">
-            <h2 class="card-title">คนใช้บริการวันนี้</h2>
-            <p>If a dog chews shoes whose shoes does he choose?</p>
+            <h2 class="card-title text-white font-light text-base">คนใช้บริการวันนี้</h2>
+            <p></p>
           </div>
         </div>
-        <div class="card bg-base-100 w-96 shadow-xl">
+        <div class="card bg-[#515262] w-96 shadow-xl">
           <div class="card-body">
-            <h2 class="card-title">วันนี้มีนัดหมาย</h2>
-            <p>If a dog chews shoes whose shoes does he choose?</p>
+            <h2 class="card-title text-white font-light text-base">วันนี้มีนัดหมาย</h2>
+            <p></p>
           </div>
         </div>
       </div>
