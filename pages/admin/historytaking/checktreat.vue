@@ -18,35 +18,30 @@
         </div>
         <input v-model="weight" type="number" placeholder="" class="input input-bordered w-full max-w-xs" />
       </label>
-
       <label class="form-control w-full max-w-xs">
         <div class="label">
           <span class="label-text text-base">ส่วนสูง(cm)</span>
         </div>
         <input v-model="height" type="number" placeholder="" class="input input-bordered w-full max-w-xs" />
       </label>
-
       <label class="form-control w-full max-w-xs">
         <div class="label">
           <span class="label-text text-base">อุณหภูมิ</span>
         </div>
         <input v-model="temperature" type="number" placeholder="" class="input input-bordered w-full max-w-xs" />
       </label>
-
       <label class="form-control w-full max-w-xs">
         <div class="label">
           <span class="label-text text-base">ความดัน</span>
         </div>
         <input v-model="bloodPressure" type="number" placeholder="" class="input input-bordered w-full max-w-xs" />
       </label>
-
       <label class="form-control w-full max-w-xs">
         <div class="label">
           <span class="label-text text-base">ชีพจร</span>
         </div>
         <input v-model="pulse" type="number" placeholder="" class="input input-bordered w-full max-w-xs" />
       </label>
-
       <label class="form-control w-full max-w-xs">
         <div class="label">
           <span class="label-text text-base">การหายใจ</span>
@@ -59,11 +54,10 @@
       <div class="flex-1 pl-4 pr-4">
         <label class="form-control">
           <div class="label">
-            <span class="label-text text-base">อาการสำคัญ</span>
+            <span class="label-text text-base">อาการสำคัญ </span>
           </div>
           <textarea v-model="chiefComplaint" class="textarea textarea-bordered h-24" placeholder=""></textarea>
         </label>
-
         <label class="form-control">
           <div class="label">
             <span class="label-text text-base">อาการ</span>
@@ -71,7 +65,6 @@
           <textarea v-model="symptoms" class="textarea textarea-bordered h-32" placeholder=""></textarea>
         </label>
       </div>
-
       <div class="flex-1 pr-3">
         <label class="form-control">
           <div class="label">
@@ -88,12 +81,11 @@
   </AdminLayout>
 </template>
 
-
 <script setup lang="ts">
-import { ref } from 'vue';
-import { useRoute, useRouter } from '#app';
+import { ref, onMounted } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import { usePatientHistoryStore } from '~/stores/patientHistory';
-import AdminLayout from '~/layouts/adminLayouts.vue'
+import AdminLayout from '~/layouts/adminLayouts.vue';
 
 const store = usePatientHistoryStore();
 const route = useRoute();
@@ -109,7 +101,12 @@ const chiefComplaint = ref('');
 const symptoms = ref('');
 const physicalExam = ref('');
 
-const patientId = Number(route.query.id); // Ensure patientId is a number
+// Ensure valid patientId is extracted
+const patientId = Number(route.query.id);
+if (isNaN(patientId) || patientId <= 0) {
+  console.error('Invalid patientId:', route.query.id);
+  router.push('/admin/error'); // Handle error accordingly
+}
 
 const submitPatientHistory = async () => {
   try {
@@ -126,15 +123,19 @@ const submitPatientHistory = async () => {
       physicalExam: physicalExam.value,
     };
 
-    await store.submitPatientHistory(patientHistoryData);
-    
-    // Redirect to a success page or show a success message
-    router.push('/admin/waitcheck');
+    // Submit patient history and get the created record with its ID
+    const createdPatientHistory = await store.submitPatientHistory(patientHistoryData);
+
+    // Navigate to the diagnosis page with patientId and patientHistoryId
+    router.push(`/admin/historytaking/diagnosis?patientId=${patientId}&patientHistoryId=${createdPatientHistory.id}&historyComplete=true`);
+
   } catch (error) {
     console.error('An error occurred:', error);
-    // Handle error (e.g., show an error message to the user)
   }
 };
-</script>
 
+onMounted(() => {
+  console.log('Patient ID:', patientId);
+});
+</script>
 

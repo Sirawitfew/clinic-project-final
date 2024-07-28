@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -12,10 +6,10 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
-
+// ข้อมูลผู้ป่วย
 model patients {
   id          Int      @id @default(autoincrement())
-  title       String   // คำนำหน้า เช่น นาย, นาง, นางสาว , อื่นๆ
+  title       String // คำนำหน้า เช่น นาย, นาง, นางสาว , อื่นๆ
   firstname   String
   lastname    String
   age         Int
@@ -36,22 +30,56 @@ model patients {
   updatedAt   DateTime @updatedAt
 
   patientHistories PatientHistory[]
+  diagnoses        Diagnosis[] // เพิ่มฟิลด์นี้เพื่อสะท้อนความสัมพันธ์
 }
 
+// ซักประวัติ // ตรวจรักษา
 model PatientHistory {
-  id              Int      @id @default(autoincrement())
-  patientId       Int
-  weight          Float
-  height          Float
-  temperature     Float
-  bloodPressure   Float
-  pulse           Float
-  respiration     Float
-  chiefComplaint  String
-  symptoms        String
-  physicalExam    String
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  id             Int      @id @default(autoincrement())
+  patientId      Int
+  physicianId    Int?
+  weight         Float
+  height         Float
+  temperature    Float
+  bloodPressure  Float
+  pulse          Float
+  respiration    Float
+  chiefComplaint String
+  symptoms       String
+  physicalExam   String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 
-  patient         patients @relation(fields: [patientId], references: [id])
+  patient patients @relation(fields: [patientId], references: [id])
+  diagnoses      Diagnosis[]
+}
+
+// ข้อมูลแพทย์
+model Physician {
+  id         Int      @id @default(autoincrement())
+  first_name String
+  last_name  String
+  about      String?
+  email      String   @unique
+  phone      String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  diagnoses Diagnosis[] // เพิ่มฟิลด์นี้เพื่อสะท้อนความสัมพันธ์
+}
+
+model Diagnosis {
+  id             Int      @id @default(autoincrement())
+  patient_id     Int // เปลี่ยนเป็น Int
+  createdAt      DateTime @default(now())
+  patientHistoryId Int?
+  updatedAt      DateTime @updatedAt
+  diagnosis      String
+  treatment_plan String?
+  notes          String?
+  physician_id   Int
+
+  patient   patients  @relation(fields: [patient_id], references: [id])
+  physician Physician @relation(fields: [physician_id], references: [id])
+  patientHistory PatientHistory? @relation(fields: [patientHistoryId], references: [id])
 }

@@ -108,7 +108,6 @@ const searchPatients = async () => {
   showDetails.value = patients.value.map(() => true)
 }
 
-// Debounce function to limit the number of API calls
 const debounce = (func, delay) => {
   let timeout
   return (...args) => {
@@ -117,13 +116,12 @@ const debounce = (func, delay) => {
   }
 }
 
-// Watch query for changes and perform search with debounce
 const debouncedSearchPatients = debounce(searchPatients, 300)
 watch(query, (newQuery) => {
   debouncedSearchPatients()
 })
 
 const goToWaitCheck = (patientId) => {
-  router.push(`/admin/checktreat?id=${patientId}`)
+  router.push(`/admin/historytaking/checktreat?id=${patientId}&historyComplete=true`)
 }
 </script>
