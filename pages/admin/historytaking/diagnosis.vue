@@ -6,7 +6,8 @@
         <div class="label">
           <span class="label-text">วินิจฉัย 1</span>
         </div>
-        <textarea v-model="diagnosis" placeholder="วินิจฉัย" class="textarea textarea-bordered textarea-xs w-full h-40"></textarea>
+        <textarea v-model="diagnosis" placeholder="วินิจฉัย"
+          class="textarea textarea-bordered textarea-xs w-full h-40"></textarea>
       </label>
       <label class="form-control w-full">
         <div class="label">
@@ -27,7 +28,7 @@
         <select v-model="physicianId" class="select select-bordered">
           <option disabled value="" selected>-- เลือกแพทย์ --</option>
           <option v-for="physician in physicians" :key="physician.id" :value="physician.id">
-            {{ physician.name }}
+            {{ physician.title }} {{ physician.first_name }} {{ physician.last_name }}
           </option>
         </select>
       </label>
@@ -52,33 +53,57 @@ const diagnosis = ref('')
 const treatmentPlan = ref('')
 const notes = ref('')
 const physicianId = ref<number | null>(null)
-const physicians = store.physicians
+const physicians = ref([]);
 
-// Extract patientId and patientHistoryId from the query
+const fetchPhysicians = async () => {
+  try {
+    const response = await fetch('/api/physician', {
+      method: 'GET',
+    });
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    physicians.value = await response.json();
+  } catch (error) {
+    console.error('Error fetching physicians:', error);
+  }
+};
+
 const patientId = Number(route.query.patientId)
 const patientHistoryId = Number(route.query.patientHistoryId)
 
 onMounted(async () => {
   console.log(patientId)
   console.log(patientHistoryId)
-  await store.fetchPhysicians()
+  console.log(physicians)
+  await fetchPhysicians()
 })
 
 const submitDiagnosis = async () => {
-  try {
-    if (!diagnosis.value || !treatmentPlan.value || !physicianId.value) {
-      alert('กรุณากรอกข้อมูลให้ครบถ้วน')
-      return
-    }
+  if (!diagnosis.value || !treatmentPlan.value || physicianId.value === null) {
+    alert('กรุณากรอกข้อมูลให้ครบถ้วน')
+    return
+  }
 
-    await store.createDiagnosis({
-      patientId,
-      patientHistoryId,
-      diagnosis: diagnosis.value,
-      treatmentPlan: treatmentPlan.value,
-      notes: notes.value,
-      physicianId: physicianId.value,
-    })
+  try {
+    const response = await fetch('/api/diagnosis', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        patient_id: patientId,
+        patientHistoryId,
+        diagnosis: diagnosis.value,
+        treatment_plan: treatmentPlan.value,
+        notes: notes.value,
+        physician_id: physicianId.value,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to submit diagnosis');
+    }
 
     alert('บันทึกวินิจฉัยสำเร็จ')
     router.push('/admin/historytaking')
@@ -87,4 +112,5 @@ const submitDiagnosis = async () => {
     alert('เกิดข้อผิดพลาดในการบันทึกข้อมูล')
   }
 }
+
 </script>

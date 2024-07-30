@@ -1,59 +1,62 @@
 <template>
-  <div class="container mx-auto p-4 mt-5">
-    <h1 class="text-2xl font-bold mb-4">แก้ไขข้อมูล</h1>
-    <form @submit.prevent="updateUser">
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <label class="form-control w-full mt-2">
-          <div class="mb-4">
-            <span class="label-text text-base">คำนำหน้า</span>
-          </div>
-          <select v-model="editUser.title" class="select select-bordered">
-            <option disabled value="">เลือก</option>
-            <option v-for="option in titleOptions" :key="option.value" :value="option.value">
-              {{ option.label }}
-            </option>
-          </select>
-        </label>
-        <label v-for="(field, index) in fields" :key="index" class="form-control w-full mb-4">
-          <div class="label mb-2">
-            <span class="label-text text-base">{{ field.label }}</span>
-          </div>
-          <div v-if="field.type === 'textarea'">
-            <textarea v-model="editUser[field.model]" :placeholder="field.placeholder"
-              class="input input-bordered w-full h-24 placeholder-centered"></textarea>
-          </div>
-          <div v-else>
-            <input v-model="editUser[field.model]" :type="field.type" :placeholder="field.placeholder"
-              class="input input-bordered w-full" />
-          </div>
-        </label>
-      </div>
-
-      <div class="mt-8">
-        <h2 class="text-xl font-semibold mb-4">ที่อยู่</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          <label v-for="(field, index) in addressFields" :key="index" class="form-control w-full mb-4">
+  <AdminLayout>
+    <div class="container mx-auto p-4 mt-5">
+      <h1 class="text-2xl font-bold mb-4">แก้ไขข้อมูล</h1>
+      <form @submit.prevent="updateUser">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <label class="form-control w-full mt-2">
+            <div class="mb-4">
+              <span class="label-text text-base">คำนำหน้า</span>
+            </div>
+            <select v-model="editUser.title" class="select select-bordered">
+              <option disabled value="">เลือก</option>
+              <option v-for="option in titleOptions" :key="option.value" :value="option.value">
+                {{ option.label }}
+              </option>
+            </select>
+          </label>
+          <label v-for="(field, index) in fields" :key="index" class="form-control w-full mb-4">
             <div class="label mb-2">
               <span class="label-text text-base">{{ field.label }}</span>
             </div>
-            <input v-model="editUser[field.model]" :type="field.type" :placeholder="field.placeholder"
-              class="input input-bordered w-full" />
+            <div v-if="field.type === 'textarea'">
+              <textarea v-model="editUser[field.model]" :placeholder="field.placeholder"
+                class="input input-bordered w-full h-24 placeholder-centered"></textarea>
+            </div>
+            <div v-else>
+              <input v-model="editUser[field.model]" :type="field.type" :placeholder="field.placeholder"
+                class="input input-bordered w-full" />
+            </div>
           </label>
         </div>
-      </div>
 
-      <div class="flex justify-end gap-3 mt-8">
-        <button @click="cancelEdit" type="button" class="btn btn-secondary btn-lg">ย้อนกลับ</button>
-        <button type="submit" class="btn btn-primary btn-lg">ยืนยัน</button>
-      </div>
-    </form>
-  </div>
+        <div class="mt-8">
+          <h2 class="text-xl font-semibold mb-4">ที่อยู่</h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <label v-for="(field, index) in addressFields" :key="index" class="form-control w-full mb-4">
+              <div class="label mb-2">
+                <span class="label-text text-base">{{ field.label }}</span>
+              </div>
+              <input v-model="editUser[field.model]" :type="field.type" :placeholder="field.placeholder"
+                class="input input-bordered w-full" />
+            </label>
+          </div>
+        </div>
+
+        <div class="flex justify-end gap-3 mt-8">
+          <button @click="cancelEdit" type="button" class="btn btn-secondary btn-lg">ย้อนกลับ</button>
+          <button type="submit" class="btn btn-primary btn-lg">ยืนยัน</button>
+        </div>
+      </form>
+    </div>
+  </AdminLayout>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useUserStore } from '~/stores/user.ts'
 import { useRoute, useRouter } from 'vue-router'
+import AdminLayout from '~/layouts/adminLayouts.vue'
 
 const userStore = useUserStore()
 const router = useRouter()
@@ -130,7 +133,7 @@ const updateUser = async () => {
   if (editUser.value.birthdate) {
     editUser.value.birthdate = new Date(editUser.value.birthdate).toISOString();
   }
-  
+
   await userStore.updateUser(editUser.value);
   router.push('/admin/users');
 }

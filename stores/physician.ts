@@ -1,50 +1,53 @@
+// import { PrismaClient } from '@prisma/client';
 
-import { defineStore } from 'pinia'
-import { ref } from 'vue'
-import axios from 'axios'
+// const prisma = new PrismaClient();
 
-export const usePhysicianStore = defineStore('physician', () => {
-  const physicians = ref<any[]>([])
+// export default defineEventHandler(async (event) => {
+//   const { method } = event.req;
+//   const id = event.context.params?.id;
 
-  // Action: Fetch Users
-  const fetchPhysician = async () => {
-    try {
-      const response = await axios.get('/api/physician')
-      physicians.value = response.data
-    } catch (error) {
-      console.error('Error fetching physician:', error)
-    }
-  }
+//   try {
+//     switch (method) {
+//       case 'GET':
+//         if (id) {
+//           return await prisma.physician.findUnique({
+//             where: { id: Number(id) },
+//           });
+//         }
+//         return await prisma.physician.findMany();
 
-  // Action: Add User
-  const addPhysician = async (physician: any) => {
-    try {
-      await axios.post('/api/physician', physician)
-      await fetchPhysician()
-    } catch (error) {
-      console.error('Error adding physician:', error)
-    }
-  }
+//       case 'POST':
+//         const newPhysicianData = await readBody(event);
+//         return await prisma.physician.create({ data: newPhysicianData });
 
-  // Action: Update User
-  const updateUser = async (physician: any) => {
-    try {
-      await axios.put('/api/physician', physician)
-      await fetchPhysician()
-    } catch (error) {
-      console.error('Error updating physician:', error)
-    }
-  }
+//       case 'PUT':
+//         if (!id) {
+//           return { error: 'ID not provided' };
+//         }
+//         const updateData = await readBody(event);
+//         return await prisma.physician.update({
+//           where: { id: Number(id) },
+//           data: updateData,
+//         });
 
-  // Action: Delete User
-  const deletePhysician = async (id: number) => {
-    try {
-      await axios.delete('/api/physician', { data: { id } })
-      await fetchPhysician()
-    } catch (error) {
-      console.error('Error deleting physician:', error)
-    }
-  }
+//       case 'DELETE':
+//         if (!id) {
+//           return { error: 'ID not provided' };
+//         }
+//         try {
+//           const deletedPhysician = await prisma.physician.delete({
+//             where: { id: Number(id) },
+//           });
+//           return deletedPhysician;
+//         } catch (error) {
+//           return { error: 'Error deleting physician', details: error.message };
+//         }
 
-  return { physicians, fetchPhysician, addPhysician, updateUser, deletePhysician }
-})
+//       default:
+//         return { error: 'Method not allowed' };
+//     }
+//   } catch (error) {
+//     console.error('Error handling request:', error);
+//     return { error: 'Internal server error', details: error.message };
+//   }
+// });

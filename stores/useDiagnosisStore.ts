@@ -10,10 +10,15 @@ export const useDiagnosisStore = defineStore('diagnosis', {
   actions: {
     async fetchPhysicians() {
       try {
-        const { data } = await useFetch('/api/physicians')
-        this.physicians = data.value || []
+        const response = await fetch('/api/physician', {
+          method: 'GET',
+        });
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        this.physicians = await response.json();
       } catch (error) {
-        console.error('Failed to fetch physicians:', error)
+        console.error('Error fetching physicians:', error);
       }
     },
     async createDiagnosis(diagnosisData: { patientId: number; patientHistoryId: number; diagnosis: string; treatmentPlan: string; notes: string; physicianId: number }) {

@@ -1,17 +1,17 @@
+// server/api/physician/[id].ts
 import { PrismaClient } from '@prisma/client';
-import { defineEventHandler, readBody, createError } from 'h3'; // ตรวจสอบการนำเข้า
+import { defineEventHandler, readBody, createError } from 'h3';
 
 const prisma = new PrismaClient();
 
 export default defineEventHandler(async (event) => {
   const { method } = event.req;
-  const id = event.context.params?.id ? Number(event.context.params.id) : null; // Convert id to a number
+  const id = event.context.params?.id ? Number(event.context.params.id) : null;
 
   try {
     switch (method) {
       case 'GET':
         if (id) {
-          // Fetch a single physician if id is provided
           const physician = await prisma.physician.findUnique({
             where: { id },
           });
@@ -20,7 +20,6 @@ export default defineEventHandler(async (event) => {
           }
           return physician;
         } else {
-          // Fetch all physicians if no id is provided
           return await prisma.physician.findMany();
         }
 

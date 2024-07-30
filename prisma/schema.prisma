@@ -57,6 +57,7 @@ model PatientHistory {
 // ข้อมูลแพทย์
 model Physician {
   id         Int      @id @default(autoincrement())
+  title      String
   first_name String
   last_name  String
   about      String?
