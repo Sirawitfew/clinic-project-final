@@ -6,11 +6,10 @@ const route = useRoute()
 const router = useRouter()
 
 const pageData = [
-  { name: 'Dashboard', route: '/' },
+  { name: 'Dashboard', route: '/admin' },
   { name: 'สินค้า', route: '/admin/products' },
   { name: 'ข้อมูลผู้ป่วย', route: '/admin/users' },
   { name: 'ข้อมูลแพทย์', route: '/admin/physicians' },
-  { name: 'รอตรวจ', route: '/admin/waitcheck' }
 ]
 
 const currentPath = ref(route.path)
@@ -46,6 +45,21 @@ onMounted(updateCurrentPathAndStatus)
             {{ page.name }}
           </RouterLink>
         </li>
+
+        <li>
+          <details open>
+            <summary>ตรวจ</summary>
+            <ul>
+              <li>
+                <RouterLink to="/admin/waitcheck">รอตรวจ</RouterLink>
+              </li>
+              <li>
+                <RouterLink to="/admin/checksuccess">ตรวจเสร็จแล้ว</RouterLink>
+              </li>
+            </ul>
+          </details>
+        </li>
+
         <li>
           <details open>
             <summary>รักษา</summary>

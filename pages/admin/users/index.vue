@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
 import { useUserStore } from '~/stores/user.ts'
+import { writeFile, utils } from 'xlsx'
 import adminLayouts from '~/layouts/adminLayouts.vue'
 
 const userStore = useUserStore()
@@ -11,6 +12,8 @@ const deleteUser = async (id) => {
 }
 
 const columns = [
+  { title: 'หมายเลข', field: 'id' },
+  { title: 'คำนำหน้า', field: 'title' },
   { title: 'ชื่อ', field: 'firstname' },
   { title: 'นามสกุล', field: 'lastname' },
   { title: 'อายุ', field: 'age' },
@@ -39,7 +42,7 @@ const formAddress = [
   { label: 'รหัสไปรษณีย์', field: 'postalCode', type: 'text' },
 ]
 
-const actionsColumn = { title: 'Actions', field: 'actions' }
+const actionsColumn = { title: '', field: 'actions' }
 
 const openModal = (user) => {
   selectedUser.value = { ...user }
@@ -62,22 +65,54 @@ const fullName = computed({
   }
 })
 
+const exportToExcel = () => {
+  const data = userStore.users.map(user => ({
+    หมายเลข: user.id,
+    คำนำหน้า: user.title,
+    ชื่อ: user.firstname,
+    นามสกุล: user.lastname,
+    อายุ: user.age,
+    น้ำหนัก: user.weight,
+    ส่วนสูง: user.height,
+    กรุปเลือด: user.blood_type,
+    แพ้ยา: user.allergy,
+    โรคประจำตัว: user.congenital,
+  }))
+
+  const worksheet = utils.json_to_sheet(data)
+  const workbook = utils.book_new()
+  utils.book_append_sheet(workbook, worksheet, 'Users')
+
+  writeFile(workbook, 'UserData.xlsx')
+}
+
 onMounted(() => {
   userStore.fetchUsers()
-  console.log(userStore.fetchUsers())
 })
 </script>
+
 
 
 <template>
   <adminLayouts>
     <div class="mx-auto p-4">
       <div class="mb-4">
-        <h1 class="text-2xl font-bold">จัดการข้อมูลคนไข้</h1>
+        <div class="flex">
+          <div class="flex-1 mt-4">
+            <div class="divider"></div>
+          </div>
+          <div class="flex-2">
+            <h1 class="font-bold text-3xl p-4">จัดการข้อมูลแพทย์</h1>
+          </div>
+          <div class="flex-1 mt-4">
+            <div class="divider"></div>
+          </div>
+        </div>
       </div>
 
       <div class="mb-4">
-        <nuxt-link to="/admin/users/create" class="btn">เพิ่มข้อมูลคนไข้</nuxt-link>
+        <nuxt-link to="/admin/users/create"
+          class="btn btn-accent w-full font-light text-white">เพิ่มข้อมูลคนไข้</nuxt-link>
       </div>
 
       <div class="overflow-x-auto">
@@ -93,7 +128,7 @@ onMounted(() => {
           <tbody>
             <tr v-for="user in userStore.users" :key="user.id">
               <td v-for="column in columns" :key="column.field" class="border p-2">
-                <p class="text-sm">{{ user[column.field] }}</p>
+                <p class="text-sm text-center">{{ user[column.field] }}</p>
               </td>
               <td class="border p-2">
                 <div class="flex justify-center gap-3">
@@ -112,9 +147,15 @@ onMounted(() => {
       </div>
     </div>
 
+    <div class="flex justify-end pr-4">
+      <button @click="exportToExcel" class="btn btn-primary font-light">
+        Export to Excel
+      </button>
+    </div>
+
     <!-- Modal Overlay -->
     <div v-if="selectedUser" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div class="bg-white rounded-lg relative w-[75%] max-h-[70%] flex flex-col overflow-hidden">
+      <div class="bg-white rounded-lg relative w-[55%] max-h-[70%] flex flex-col overflow-hidden">
         <!-- Header with close button -->
         <div class="p-4 flex justify-between items-center bg-orange-300 sticky top-0 z-10">
           <h3 class="text-2xl font-bold text-white">ข้อมูลเพิ่มเติม</h3>
@@ -124,7 +165,8 @@ onMounted(() => {
         <!-- Scrollable Content Area -->
         <div class="overflow-y-auto">
           <div class="flex mt-5">
-            <div class="flex-1 p-8">
+
+            <div class="flex-2 p-8">
               <div class="avatar flex justify-center">
                 <div class="w-48 rounded">
                   <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
@@ -135,24 +177,60 @@ onMounted(() => {
               </div>
             </div>
 
-            <div class="flex-1 justify-start">
-              <div v-for="field in formFields" :key="field.field" class="flex-1">
-                <label class="form-control w-full mt-5">
-                  <div class="label">
-                    <span class="label-text">{{ field.label }}</span>
-                  </div>
-                  <input v-model="selectedUser[field.field]" :type="field.type" :placeholder="`กรอก ${field.label}`"
-                    class="input input-bordered w-[80%]" />
-                </label>
+            <div class="flex-1">
+              <div>
+                <h1 class=" font-bold text-2xl">ข้อมูลส่วนตัว</h1>
+              </div>
+              <div class="mt-5">
+                <h1>ชื่อ : {{ selectedUser.title }} {{ selectedUser.firstname }} {{ selectedUser.lastname }}</h1>
+              </div>
+              <div class="mt-5">
+                <h1>อายุ : {{ selectedUser.age }}</h1>
+              </div>
+              <div class="mt-5">
+                <h1>เกิดวันที่ : {{ selectedUser.birthdate }}</h1>
+              </div>
+              <div class="mt-5">
+                <h1>น้ำหนัก : {{ selectedUser.weight }}</h1>
+              </div>
+              <div class="mt-5">
+                <h1>ส่วนสูง : {{ selectedUser.height }}</h1>
+              </div>
+              <div class="mt-5">
+                <h1>กรุ๊ปเลือด : {{ selectedUser.blood_type }}</h1>
+              </div>
+              <div class="mt-5">
+                <h1>เบอร์โทรศัพท์ : {{ selectedUser.phoneNumber }}</h1>
+              </div>
+              <div class="mt-5">
+                <h1>แพ้ยา : {{ selectedUser.congenital }}</h1>
+              </div>
+              <div class="mt-5">
+                <h1>โรคประจำตัว : {{ selectedUser.allergy }}</h1>
               </div>
             </div>
 
             <div class="flex-1 justify-start">
               <div>
-                <h1>ชื่อ : {{ selectedUser.firstname }} {{ selectedUser.lastname }}</h1>
+                <h1 class=" font-bold text-2xl">ที่อยู่</h1>
               </div>
               <div class="mt-5">
-                <h1>อายุ : {{ selectedUser.age }}</h1>
+                <h1>บ้านเลขที่ : {{ selectedUser.houseNumber }}</h1>
+              </div>
+              <div class="mt-5">
+                <h1>หมู่ : {{ selectedUser.village }}</h1>
+              </div>
+              <div class="mt-5">
+                <h1>ตำบล : {{ selectedUser.subdistrict }}</h1>
+              </div>
+              <div class="mt-5">
+                <h1>อำเภอ : {{ selectedUser.district }}</h1>
+              </div>
+              <div class="mt-5">
+                <h1>จังหวัด : {{ selectedUser.province }}</h1>
+              </div>
+              <div class="mt-5">
+                <h1>รหัสไปรษณีย์ : {{ selectedUser.postalCode }}</h1>
               </div>
             </div>
           </div>

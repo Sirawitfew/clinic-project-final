@@ -123,10 +123,8 @@ const submitPatientHistory = async () => {
       physicalExam: physicalExam.value,
     };
 
-    // Submit patient history and get the created record with its ID
     const createdPatientHistory = await store.submitPatientHistory(patientHistoryData);
 
-    // Navigate to the diagnosis page with patientId and patientHistoryId
     router.push(`/admin/historytaking/diagnosis?patientId=${patientId}&patientHistoryId=${createdPatientHistory.id}&historyComplete=true`);
 
   } catch (error) {

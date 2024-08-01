@@ -71,11 +71,11 @@ onMounted(fetchPhysicians);
         <table class="table">
           <thead>
             <tr>
-              <th>ID</th>
-              <th>คำนำหน้า</th>
-              <th>ชื่อ</th>
-              <th>นามสกุล</th>
-              <th>แพทย์ทาง</th>
+              <th><p class="text-center">ID</p></th>
+              <th><p class="text-center">คำนำหน้า</p></th>
+              <th><p class="text-center">ชื่อ</p></th>
+              <th><p class="text-center">นามสกุล</p></th>
+              <th><p class="text-center">แพทย์ทาง</p></th>
               <th></th>
             </tr>
           </thead>
