@@ -3,28 +3,22 @@
     <div
       class="navbar bg-base-100 mb-5 bg-[#FAFAFA] rounded-full my-3 shadow-lg sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
       <div class="flex-1 mx-3">
-        <a class="btn btn-ghost text-xl rounded-full">AIRPORT CLINIC</a>
+        <RouterLink to="/home" class="btn btn-ghost text-xl rounded-full">AIRPORT CLINIC</RouterLink>
       </div>
 
       <div class="mx-5 menu">
         <ul class="flex items-center">
           <li class="mx-4 sm:mx-2">
-            <div >หน้าแรก</div>
+            <RouterLink to="/home">หน้าแรก</RouterLink>
           </li>
           <li class="mx-4 sm:mx-2">
-            <div >โปรโมชั่น</div>
+            <RouterLink to="/promotion">โปรโมชั่น</RouterLink>
           </li>
           <li class="mx-4 sm:mx-2">
-            <div>สินค้า</div>
+            <RouterLink to="/product">สินค้า</RouterLink>
           </li>
           <li class="mx-4 sm:mx-2">
-            <div>บริการ</div>
-          </li>
-          <li class="mx-4 sm:mx-2">
-            <div>บทความ</div>
-          </li>
-          <li class="mx-4 sm:mx-2">
-            <div>เกี่ยวกับเรา</div>
+            <RouterLink to="/about">เกี่ยวกับเรา</RouterLink>
           </li>
         </ul>
       </div>
@@ -43,10 +37,10 @@
           </div>
           <div tabindex="0" class="card card-compact dropdown-content bg-base-100 z-[1] mt-3 w-52 shadow">
             <div class="card-body">
-              <span class="text-lg font-bold">8 Items</span>
-              <span class="text-info">Subtotal: $999</span>
+              <span class="text-lg font-bold">8 ชิ้น</span>
+              <span class="text-info">ยอดทั้งหมด: $999</span>
               <div class="card-actions">
-                <button class="btn btn-primary btn-block">View cart</button>
+                <button class="btn btn-primary btn-block">ดูตระกร้า</button>
               </div>
             </div>
           </div>
@@ -61,12 +55,11 @@
           <ul tabindex="0" class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
             <li>
               <a class="justify-between">
-                Profile
-                <span class="badge">New</span>
+                โปรไฟล์
               </a>
             </li>
-            <li><a>Settings</a></li>
-            <li><a>Logout</a></li>
+            <li><a>ตั้งค่า</a></li>
+            <li><a>ออกจากระบบ</a></li>
           </ul>
         </div>
       </div>
@@ -81,24 +74,32 @@
       <div class="hero-content text-center text-neutral-content">
         <div class="max-w-md">
           <h1 class="mb-5 text-5xl font-bold text-white">ติดต่อเรา</h1>
-          <p class="mb-5">
-            Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda
-            excepturi exercitationem quasi. In deleniti eaque aut repudiandae et
-            a id nisi.
+          <p class="mb-5 text-white">
+            คลินิกสุขภาพ ความงาม และศัลยกรรม
+            โบท็อกซ์ ฟิลเลอร์ ร้อยไหม วิตามินผิว
+            เปิดบริการทุกวัน 11.00 - 20.00
           </p>
           <!-- Social-->
           <div class="flex space-x-2 justify-center opacity-75">
             <!-- Instagram -->
             <button>
-              INS
+              <Location></Location>
             </button>
             <!-- Twitter -->
             <button>
-              CALL
+              <Call></Call>
             </button>
             <!-- Facebook -->
             <button>
-              Facebook
+              <svg
+                height="36"
+                width="36"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="currentColor"
+                class="text-blue-700">
+                <path d="M22.675 0h-21.35C.597 0 0 .597 0 1.325v21.351c0 .729.597 1.324 1.325 1.324h11.491v-9.284h-3.117v-3.622h3.117V8.413c0-3.1 1.893-4.788 4.657-4.788 1.325 0 2.463.099 2.795.143v3.241l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.312h3.587l-.467 3.622h-3.12V24h6.116c.729 0 1.324-.595 1.324-1.324V1.325C24 .597 23.404 0 22.675 0z" />
+              </svg>
             </button>
           </div>
         </div>
@@ -109,5 +110,6 @@
 </template>
 
 <script setup>
-// Add any script logic here
+import Location from '../components/user/Location.vue';
+import Call from '../components/user/Call.vue';
 </script>

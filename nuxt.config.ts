@@ -1,8 +1,11 @@
 // nuxt.config.ts or nuxt.config.js
 export default defineNuxtConfig({
   compatibilityDate: '2024-04-03',
+  ssr: false,
   devtools: { enabled: true },
   css: ['~/assets/css/main.css'],
+
+  plugins: ['~/plugins/fontawesome.ts' , '~/plugins/apexcharts.ts' ],
   postcss: {
     plugins: {
       tailwindcss: {},
@@ -17,8 +20,10 @@ export default defineNuxtConfig({
   ],
   googleFonts: {
     families: {
-      Sarabun: [400, 700], // Load all weights and styles
+      Sarabun: [400, 700],
+      Inter: [400, 700], 
+      Kanit: [400, 700], 
     },
-    display: 'swap', // Optional: Control the display mode
+    display: 'swap',
   },
 })

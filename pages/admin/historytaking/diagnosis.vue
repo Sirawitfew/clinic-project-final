@@ -1,31 +1,70 @@
   <template>
     <AdminLayout>
-      <div>
-        <h1>วินิจฉัย</h1>
-        <label class="form-control w-full">
+      <div class=" container mx-auto">
+        <div class="flex bg-white rounded-full mt-3 shadow-md">
+          <div class="flex-1 mt-4 pl-3">
+            <div class="divider divider-accent"></div>
+          </div>
+          <div class="flex-2">
+            <h1 class="font-light text-4xl p-4">วินิจฉัย</h1>
+          </div>
+          <div class="flex-1 mt-4 pr-4">
+            <div class="divider divider-accent"></div>
+          </div>
+        </div>
+
+        <label class="form-control w-full mt-5">
           <div class="label">
-            <span class="label-text">วินิจฉัย 1</span>
+            <div class="flex">
+              <div class="mt-2">
+                <span class="label-text text-lg">วินิจฉัย 1</span>
+              </div>
+              <div class="ml-2">
+                <img src="https://img2.pic.in.th/pic/arm_2855503.png" alt="">
+              </div>
+            </div>
           </div>
           <textarea v-model="diagnosis" placeholder="วินิจฉัย"
-            class="textarea textarea-bordered textarea-xs w-full h-40"></textarea>
+            class="textarea textarea-accent textarea-bordered textarea-sm text-base w-full h-40"></textarea>
         </label>
         <label class="form-control w-full">
           <div class="label">
-            <span class="label-text">แผนการรักษา</span>
+            <div class="flex">
+              <div class="mt-2">
+                <span class="label-text text-lg">แผนการรักษา</span>
+              </div>
+              <div class="ml-2">
+                <img src="https://img2.pic.in.th/pic/arm_2855503.png" alt="">
+              </div>
+            </div>
           </div>
-          <input v-model="treatmentPlan" type="text" placeholder="Type here" class="input input-bordered w-full" />
+          <input v-model="treatmentPlan" type="text" placeholder="Type here" class="input input-accent input-bordered w-full" />
         </label>
         <label class="form-control w-full">
           <div class="label">
-            <span class="label-text">อื่นๆ (notes)</span>
+            <div class="flex">
+              <div class="mt-2">
+                <span class="label-text text-lg">อื่นๆ (notes)</span>
+              </div>
+              <div class="ml-2">
+                <img src="https://img2.pic.in.th/pic/arm_2855503.png" alt="">
+              </div>
+            </div>
           </div>
-          <input v-model="notes" type="text" placeholder="Type here" class="input input-bordered w-full" />
+          <input v-model="notes" type="text" placeholder="Type here" class="input input-accent input-bordered w-full" />
         </label>
         <label class="form-control w-full">
           <div class="label">
-            <span class="label-text">เลือกแพทย์ผู้รักษา</span>
+            <div class="flex">
+              <div class="mt-2">
+                <span class="label-text text-lg">เลือกแพทย์ผู้รักษา</span>
+              </div>
+              <div class="ml-2">
+                <img src="https://img2.pic.in.th/pic/arm_2855503.png" alt="">
+              </div>
+            </div>
           </div>
-          <select v-model="physicianId" class="select select-bordered">
+          <select v-model="physicianId" class="select text-base select-accent select-bordered">
             <option disabled value="" selected>-- เลือกแพทย์ --</option>
             <option v-for="physician in physicians" :key="physician.id" :value="physician.id">
               {{ physician.title }} {{ physician.first_name }} {{ physician.last_name }}
@@ -33,7 +72,7 @@
           </select>
         </label>
         <div>
-          <button @click="submitDiagnosis" class="btn btn-accent mt-5 w-full">ส่งวินิจฉัย</button>
+          <button @click="submitDiagnosis" class="btn btn-accent mt-5 w-full font-light text-white text-lg">ส่งวินิจฉัย</button>
         </div>
       </div>
     </AdminLayout>

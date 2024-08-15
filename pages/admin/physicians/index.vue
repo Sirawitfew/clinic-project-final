@@ -49,33 +49,38 @@ onMounted(fetchPhysicians);
 
 <template>
   <AdminLayout>
-    <div class=" mx-auto p-4">
-      <div class="flex">
-        <div class="flex-1 mt-4">
-          <div class="divider"></div>
-        </div>
-        <div class="flex-2">
-          <h1 class="font-bold text-3xl p-4">จัดการข้อมูลแพทย์</h1>
-        </div>
-        <div class="flex-1 mt-4">
-          <div class="divider"></div>
-        </div>
+    <div class="container mx-auto p-4 bg-white">
+      <div class="flex justify-center items-center bg-[#FFD600] w-full h-20 shadow-md rounded-full mt-5 bg-opacity-50">
+        <h2 class="text-5xl font-bold text-[#fefeff] text-stroke tracking-wide">จัดการข้อมูลแพทย์</h2>
       </div>
 
       <div class="mb-5">
         <nuxt-link to="/admin/physicians/create"
-          class="btn btn-accent w-full text-white font-light">เพิ่มข้อมูล</nuxt-link>
+          class="btn btn-accent w-full text-white font-light mt-5">เพิ่มข้อมูล</nuxt-link>
       </div>
 
       <div class="overflow-x-auto">
         <table class="table">
           <thead>
             <tr>
-              <th><p class="text-center">ID</p></th>
-              <th><p class="text-center">คำนำหน้า</p></th>
-              <th><p class="text-center">ชื่อ</p></th>
-              <th><p class="text-center">นามสกุล</p></th>
-              <th><p class="text-center">แพทย์ทาง</p></th>
+              <th>
+                <p class="text-center">ID</p>
+              </th>
+              <th>
+                <p class="text-center">คำนำหน้า</p>
+              </th>
+              <th>
+                <p class="text-center">ชื่อ</p>
+              </th>
+              <th>
+                <p class="text-center">นามสกุล</p>
+              </th>
+              <th>
+                <p class="text-center">แพทย์ทาง</p>
+              </th>
+              <th>
+                <p class="text-center">phone</p>
+              </th>
               <th></th>
             </tr>
           </thead>
@@ -86,6 +91,7 @@ onMounted(fetchPhysicians);
               <td>{{ physician.first_name }}</td>
               <td>{{ physician.last_name }}</td>
               <td>{{ physician.about }}</td>
+              <td>{{ physician.phone }}</td>
               <td>
                 <div class="flex gap-2 justify-center">
                   <button class="btn" @click="deletePhysician(physician.id)">
@@ -120,5 +126,9 @@ onMounted(fetchPhysicians);
 .table th {
   background-color: #f4f4f4;
   font-size: small;
+}
+
+.text-stroke {
+  text-shadow: -5px -1px 0 #FF8128, 1px -1px 0 #FF8128, -5px 1px 0 #FF8128, 1px 1px 0 #FF8128;
 }
 </style>

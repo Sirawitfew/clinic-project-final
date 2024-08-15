@@ -1,4 +1,4 @@
-// stores/userStore.ts
+
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import axios from 'axios'
@@ -6,7 +6,6 @@ import axios from 'axios'
 export const useUserStore = defineStore('user', () => {
   const users = ref<any[]>([])
 
-  // Action: Fetch Users
   const fetchUsers = async () => {
     try {
       const response = await axios.get('/api/user')
@@ -16,7 +15,6 @@ export const useUserStore = defineStore('user', () => {
     }
   }
 
-  // Action: Add User
   const addUser = async (user: any) => {
     try {
       await axios.post('/api/user', user)
@@ -26,7 +24,6 @@ export const useUserStore = defineStore('user', () => {
     }
   }
 
-  // Action: Update User
   const updateUser = async (user: any) => {
     try {
       await axios.put('/api/user', user)
@@ -36,7 +33,6 @@ export const useUserStore = defineStore('user', () => {
     }
   }
 
-  // Action: Delete User
   const deleteUser = async (id: number) => {
     try {
       await axios.delete('/api/user', { data: { id } })

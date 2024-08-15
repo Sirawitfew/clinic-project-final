@@ -49,7 +49,7 @@
           <div class="label">
             <span class="label-text">หมายเลขโทรศัพท์</span>
           </div>
-          <input type="tel" v-model="form.phone" placeholder="Type here" class="input input-bordered w-full" />
+          <input type="tel" v-model="form.phone" @input="formatPhoneNumber" placeholder="080-000-0000" class="input input-bordered w-full" />
         </label>
 
         <label class="form-control w-full mt-3">
@@ -69,6 +69,7 @@
 
 <script setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import AdminLayout from '~/layouts/adminLayouts.vue'
 import { usePhysicianStore } from '~/stores/physicianStore'
 
@@ -83,6 +84,20 @@ const form = ref({
   phone: '',
   about: ''
 })
+
+const formatPhoneNumber = (event) => {
+  let input = event.target.value.replace(/\D/g, '').substring(0, 10)
+  let formatted = input
+  
+  if (input.length > 6) {
+    formatted = `${input.substring(0, 3)}-${input.substring(3, 6)}-${input.substring(6, 10)}`
+  } else if (input.length > 3) {
+    formatted = `${input.substring(0, 3)}-${input.substring(3, 6)}`
+  }
+
+  event.target.value = formatted
+  form.value.phone = formatted
+}
 
 const submitForm = async () => {
   try {

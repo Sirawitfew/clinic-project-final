@@ -95,27 +95,20 @@ onMounted(() => {
 
 <template>
   <adminLayouts>
-    <div class="mx-auto p-4">
+    <div class="mx-auto p-4 bg-white h-full">
       <div class="mb-4">
-        <div class="flex">
-          <div class="flex-1 mt-4">
-            <div class="divider"></div>
-          </div>
-          <div class="flex-2">
-            <h1 class="font-bold text-3xl p-4">จัดการข้อมูลแพทย์</h1>
-          </div>
-          <div class="flex-1 mt-4">
-            <div class="divider"></div>
-          </div>
+        <div
+          class="flex justify-center items-center bg-[#FFD600] w-full h-20 shadow-md rounded-full mt-5 bg-opacity-50">
+          <h2 class="text-5xl font-bold text-[#fefeff] text-stroke tracking-wide">จัดการข้อมูลคนไข้</h2>
         </div>
       </div>
 
-      <div class="mb-4">
+      <div class=" mt-5">
         <nuxt-link to="/admin/users/create"
           class="btn btn-accent w-full font-light text-white">เพิ่มข้อมูลคนไข้</nuxt-link>
       </div>
 
-      <div class="overflow-x-auto">
+      <div class="overflow-x-auto mt-5">
         <table class="table w-full text-left border-collapse">
           <thead>
             <tr>
@@ -247,3 +240,9 @@ onMounted(() => {
     </div>
   </adminLayouts>
 </template>
+
+<style scoped>
+.text-stroke {
+  text-shadow: -5px -1px 0 #FF8128, 1px -1px 0 #FF8128, -5px 1px 0 #FF8128, 1px 1px 0 #FF8128;
+}
+</style>

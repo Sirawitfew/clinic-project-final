@@ -1,6 +1,6 @@
 <template>
   <AdminLayout>
-    <div class=" container mx-auto">
+    <div class=" mx-auto bg-white h-full">
       <div class="mb-4">
         <div class="flex">
           <div class="flex-1 mt-4">
@@ -15,14 +15,14 @@
         </div>
       </div>
 
-      <div class="overflow-x-auto">
+      <div class="overflow-x-auto p-4">
         <table class="table">
           <!-- head -->
           <thead>
             <tr>
-              <th>id</th>
-              <th>patient_id</th>
-              <th>physician_id</th>
+              <th>ID</th>
+              <th>รายชื่อคนไข้</th>
+              <th>แพทย์ผู้รักษา</th>
               <th>วินิจฉัย</th>
               <th>การรักษา</th>
               <th>อื่นๆ</th>
@@ -34,15 +34,17 @@
             <!-- Display each diagnosis record -->
             <tr v-for="diagnosis in diagnoses" :key="diagnosis.id">
               <th>{{ diagnosis.id }}</th>
-              <td>{{ diagnosis.patient_id }}</td>
-              <td>{{ diagnosis.physician_id }}</td>
+              <td>{{ getPatientName(diagnosis.patient_id) }}</td>
+              <td>{{ getPhysicianName(diagnosis.physician_id) }}</td>
               <td>{{ diagnosis.diagnosis }}</td>
               <td>{{ diagnosis.treatment_plan }}</td>
               <td>{{ diagnosis.notes }}</td>
               <td>{{ formatDate(diagnosis.createdAt) }}</td>
               <td>
-                <div class="flex justify-center">
-                  <button @click="deleteDiagnosis(diagnosis.id)" class="btn  btn-accent text-white font-light" >ลบ</button>
+                <div class="flex justify-center gap-2">
+                  <button @click="deleteDiagnosis(diagnosis.id)" class="btn btn-accent text-white font-light">ลบ</button>
+                  <button class="btn btn-accent text-white font-light">แก้ไข</button>
+                  <button class="btn btn-accent text-white font-light">ชำระเงิน</button>
                 </div>
               </td>
             </tr>
@@ -58,6 +60,8 @@ import { ref, onMounted } from 'vue';
 import AdminLayout from '~/layouts/adminLayouts.vue';
 
 const diagnoses = ref([]);
+const patients = ref([]);
+const physicians = ref([]);
 
 const formatDate = (dateString: string) => {
   const date = new Date(dateString);
@@ -84,6 +88,50 @@ const fetchDiagnoses = async () => {
   }
 };
 
+const fetchPatients = async () => {
+  try {
+    const response = await fetch('/api/user', {
+      method: 'GET',
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch patients');
+    }
+
+    patients.value = await response.json();
+    console.log('Fetched patients:', patients.value);
+  } catch (error) {
+    console.error('Error fetching patients:', error);
+  }
+};
+
+const fetchPhysicians = async () => {
+  try {
+    const response = await fetch('/api/physician', {
+      method: 'GET',
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch physicians');
+    }
+
+    physicians.value = await response.json();
+    console.log('Fetched physicians:', physicians.value);
+  } catch (error) {
+    console.error('Error fetching physicians:', error);
+  }
+};
+
+const getPatientName = (id: number) => {
+  const patient = patients.value.find(patient => patient.id === id);
+  return patient ? `${patient.firstname} ${patient.lastname}` : 'Unknown Patient';
+};
+
+const getPhysicianName = (id: number) => {
+  const physician = physicians.value.find(physician => physician.id === id);
+  return physician ? `${physician.first_name} ${physician.last_name}` : 'Unknown Physician';
+};
+
 const deleteDiagnosis = async (id: number) => {
   try {
     const response = await fetch('/api/diagnosis', {
@@ -105,9 +153,15 @@ const deleteDiagnosis = async (id: number) => {
   }
 };
 
+onMounted(() => {
+  fetchDiagnoses();
+  fetchPatients();
+  fetchPhysicians();
+});
 
-
-onMounted(fetchDiagnoses);
+onMounted(() => {
+  console.log(patients.value)
+})
 
 </script>
 

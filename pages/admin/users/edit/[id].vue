@@ -1,7 +1,11 @@
 <template>
   <AdminLayout>
+    <div class=" bg-white h-14">
+      <div class=" flex">
+        <h1 class=" items-center text-3xl font-bold p-2 mx-2 mt-1">แก้ไขข้อมูล</h1>
+      </div>
+    </div>
     <div class="container mx-auto p-4 mt-5">
-      <h1 class="text-2xl font-bold mb-4">แก้ไขข้อมูล</h1>
       <form @submit.prevent="updateUser">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <label class="form-control w-full mt-2">
